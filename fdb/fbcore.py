@@ -947,7 +947,11 @@ class Connection(object):
         self.__ic = self.query_transaction.cursor()
         self.__ic._set_as_internal()
         # Get Firebird engine version
-        verstr = self.db_info(isc_info_firebird_version)
+        try:
+            verstr = self.db_info(isc_info_firebird_version)
+        except:
+            # Fallback to interbase
+            verstr = self.db_info(isc_info_version)
         x = verstr.split()
         if x[0].find('V') > 0:
             (x,self.__version) = x[0].split('V')
